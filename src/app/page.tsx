@@ -57,18 +57,21 @@ export default function HomePage() {
   }
 
   function updateTool(i: number, field: keyof ToolEntry, value: string | number) {
-    const updated = [...tools];
-    if (field === "monthlySpend" || field === "seats") {
-      (updated[i] as Record<string, unknown>)[field] = Number(value);
-    } else {
-      (updated[i] as Record<string, unknown>)[field] = value;
-      if (field === "toolId") {
-        const tool = TOOLS.find((t) => t.id === value);
-        updated[i].plan = tool?.plans[0] ?? "pro";
-      }
+  const updated = [...tools];
+
+  if (field === "monthlySpend" || field === "seats") {
+    (updated[i] as any)[field] = Number(value);
+  } else {
+    (updated[i] as any)[field] = value;
+
+    if (field === "toolId") {
+      const tool = TOOLS.find((t) => t.id === value);
+      updated[i].plan = tool?.plans[0] ?? "pro";
     }
-    setTools(updated);
   }
+
+  setTools(updated);
+}
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
